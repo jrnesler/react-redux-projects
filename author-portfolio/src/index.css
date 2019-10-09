@@ -8,12 +8,27 @@
     src: url(assets/Mansalva-Regular.ttf);
 }
 
+html {
+    height: '100vh';
+    min-height: '100vh';
+}
+
 body {
     text-align: center;
     font-size: 20px;
     padding: 2.5%;
     font-family: Mansalva;
+    background: rgb(115,210,212);
+    background: linear-gradient(0deg, rgba(115,210,212,1) 0%, rgba(9,39,68,0.6362745781906513) 100%); 
+    background-repeat: no-repeat;
+    height: '100vh';
+    min-height: '100vh';
 }
+
+.frosted{
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+  }
 
 .profile{
     width: 200px;

@@ -1,5 +1,4 @@
-import etsy from '../assets/etsy.png';
-//todo project 2/3
+import etsy from '../images/etsy.png';
 
 const PROJECTS =[
     {

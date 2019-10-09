@@ -1,5 +1,6 @@
 import React from 'react';
 import SOCIAL_PROFILES from '../data/socialProfiles';
+import '../index.css';
 
 const SocialProfile = props => {
     const{link, image} = props.socialProfile;
@@ -13,7 +14,7 @@ const SocialProfile = props => {
 
 const SocialProfiles = () =>(
     <div>
-        <h2>Connect with me!</h2>
+        <h2>Scream into the Void with me</h2>
         <div>
             {
                 SOCIAL_PROFILES.map(SOCIAL_PROFILE => {
