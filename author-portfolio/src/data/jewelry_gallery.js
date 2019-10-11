@@ -6,17 +6,20 @@ const JEWELRYGALLERIES =[
     {
         id: 1,
         image: beaded,
-        text: "Beaded Jewelry"
+        text: "Beaded Jewelry",
+        keyword: 'beadwork'
     },
     {
         id: 2,
         image: wire,
-        text: "Wire Wrapped Jewelry"
+        text: "Wire Wrapped Jewelry",
+        keyword: 'wirewrapped'
     },
     {
         id: 3,
         image: dice,
-        text: "Dice Jewelry"
+        text: "Dice Jewelry",
+        keyword: 'dice'
     }
 ];
 

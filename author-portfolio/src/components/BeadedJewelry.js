@@ -1,24 +1,40 @@
 import React from 'react';
-import Header from './Header';
 import '../css/gallery.css';
-import '../css/lightbox.min.css';
 import '../css/jewelry_main.css';
+import BEADWORKGALLERY from '../data/beadwork';
+import SimpleReactLightbox from "simple-react-lightbox"; 
+import { SRLWrapper } from "simple-react-lightbox";
+
+const Beadwork = props =>{
+    const{thumbnail, url, title } = props.beadwork;
+    return(
+        <div className="gallery">
+            <a href={url} data-attribute="SRL">
+            <img src={thumbnail} alt={title} />
+            </a>
+        </div>
+    )
+}
 
 
 const BeadedJewelry = () =>{
     return(
         <div>
-        <Header />
-        <div class="frosted">
-        <p>BACK BUTTON AND NAV</p>
+        <div className="frosted">
+        <p>info</p>
+        <p>TODO LIGHTBOX</p>
         </div>
-        <div class="gallery">
-            <a href="assets/images/blue_pendant.jpg" data-lightbox="mygallery"><img src="assets/images/thumb_blue_pendant.jpg" /></a>
-            <a href="assets/images/green_pendant.jpg" data-lightbox="mygallery"><img src="assets/images/thumb_green_pendant.jpg"/></a>
-            <a href="assets/images/pink_pendant.jpg" data-lightbox="mygallery"><img src="assets/images/thumb_pink_pendant.jpg"/></a>
-            <a href="assets/images/white_pendant.jpg" data-lightbox="mygallery"><img src="assets/images/thumb_white_pendant.jpg"/></a>
-       </div>
-       <script src="lightbox-plus-jquery.min.js"></script>
+        <SimpleReactLightbox>
+            <SRLWrapper>
+            {
+                BEADWORKGALLERY.map(BEADWORK =>{
+                    return(
+                        <Beadwork key = {BEADWORK.id} beadwork={BEADWORK} />
+                    )
+                })
+            }
+            </SRLWrapper>
+            </SimpleReactLightbox>
        </div>
     );
 }
