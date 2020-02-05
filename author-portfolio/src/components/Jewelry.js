@@ -1,16 +1,16 @@
 import React from 'react';
 import JEWELRYGALLERIES from '../data/jewelry_gallery';
-import BeadedJewelry from './BeadedJewelry.js';
 import Header from './Header';
 import '../css/jewelry_main.css';
 import {Route, Switch, Link} from 'react-router-dom';
+import JewelryGallery from './JewelryGallery';
 
 
 const Jewelry = props =>{
     const{image, text, keyword} = props.jewelry;
     return(
         <div>
-            <img src ={image} alt='jewelry' class="image"/>
+            <img src ={image} alt='jewelry' className="image"/>
             <div className="middle">
                 <div className="text">{text}</div>
             </div>
@@ -40,7 +40,7 @@ const Jewelries = () =>(
                 )})
             }
             <Switch>
-                <Route path={`/jewelry/beadwork`} component={BeadedJewelry} />
+                <Route path={`/jewelry/:keyword`} component={JewelryGallery} />
             </Switch>
             </div>
             

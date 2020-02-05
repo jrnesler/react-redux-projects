@@ -324,7 +324,7 @@ checkPropTypes.resetWarningCache = function () {
 
 module.exports = checkPropTypes;
 },{"./lib/ReactPropTypesSecret":"../node_modules/prop-types/lib/ReactPropTypesSecret.js"}],"../node_modules/react/cjs/react.development.js":[function(require,module,exports) {
-/** @license React v16.10.1
+/** @license React v16.10.2
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -343,7 +343,7 @@ if ("development" !== "production") {
     var checkPropTypes = require('prop-types/checkPropTypes'); // TODO: this is special because it gets imported during build.
 
 
-    var ReactVersion = '16.10.1'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+    var ReactVersion = '16.10.2'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
     // nor polyfill, then a plain number is used for performance.
 
     var hasSymbol = typeof Symbol === 'function' && Symbol.for;
@@ -2608,7 +2608,7 @@ if ("development" === 'production') {
   module.exports = require('./cjs/react.development.js');
 }
 },{"./cjs/react.development.js":"../node_modules/react/cjs/react.development.js"}],"../node_modules/scheduler/cjs/scheduler.development.js":[function(require,module,exports) {
-/** @license React v0.16.1
+/** @license React v0.16.2
  * scheduler.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -3641,7 +3641,7 @@ if ("development" === 'production') {
   module.exports = require('./cjs/scheduler.development.js');
 }
 },{"./cjs/scheduler.development.js":"../node_modules/scheduler/cjs/scheduler.development.js"}],"../node_modules/scheduler/cjs/scheduler-tracing.development.js":[function(require,module,exports) {
-/** @license React v0.16.1
+/** @license React v0.16.2
  * scheduler-tracing.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -4059,7 +4059,7 @@ if ("development" === 'production') {
   module.exports = require('./cjs/scheduler-tracing.development.js');
 }
 },{"./cjs/scheduler-tracing.development.js":"../node_modules/scheduler/cjs/scheduler-tracing.development.js"}],"../node_modules/react-dom/cjs/react-dom.development.js":[function(require,module,exports) {
-/** @license React v16.10.1
+/** @license React v16.10.2
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -4952,7 +4952,7 @@ if ("development" !== "production") {
      */
 
 
-    function extractPluginEvents(topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget) {
+    function extractPluginEvents(topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags) {
       var events = null;
 
       for (var i = 0; i < plugins.length; i++) {
@@ -4960,7 +4960,7 @@ if ("development" !== "production") {
         var possiblePlugin = plugins[i];
 
         if (possiblePlugin) {
-          var extractedEvents = possiblePlugin.extractEvents(topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget);
+          var extractedEvents = possiblePlugin.extractEvents(topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags);
 
           if (extractedEvents) {
             events = accumulateInto(events, extractedEvents);
@@ -4971,8 +4971,8 @@ if ("development" !== "production") {
       return events;
     }
 
-    function runExtractedPluginEventsInBatch(topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget) {
-      var events = extractPluginEvents(topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget);
+    function runExtractedPluginEventsInBatch(topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags) {
+      var events = extractPluginEvents(topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags);
       runEventsInBatch(events);
     }
 
@@ -9683,7 +9683,7 @@ if ("development" !== "production") {
         var config = topLevelEventsToDispatchConfig[topLevelType];
         return config !== undefined ? config.eventPriority : ContinuousEvent;
       },
-      extractEvents: function (topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget) {
+      extractEvents: function (topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags) {
         var dispatchConfig = topLevelEventsToDispatchConfig[topLevelType];
 
         if (!dispatchConfig) {
@@ -9924,7 +9924,7 @@ if ("development" !== "production") {
         var eventTarget = getEventTarget(bookKeeping.nativeEvent);
         var topLevelType = bookKeeping.topLevelType;
         var nativeEvent = bookKeeping.nativeEvent;
-        runExtractedPluginEventsInBatch(topLevelType, bookKeeping.eventSystemFlags, targetInst, nativeEvent, eventTarget);
+        runExtractedPluginEventsInBatch(topLevelType, targetInst, nativeEvent, eventTarget, bookKeeping.eventSystemFlags);
       }
     } // TODO: can we stop exporting these?
 
@@ -14780,7 +14780,7 @@ if ("development" !== "production") {
 
     var BeforeInputEventPlugin = {
       eventTypes: eventTypes$1,
-      extractEvents: function (topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget) {
+      extractEvents: function (topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags) {
         var composition = extractCompositionEvent(topLevelType, targetInst, nativeEvent, nativeEventTarget);
         var beforeInput = extractBeforeInputEvent(topLevelType, targetInst, nativeEvent, nativeEventTarget);
 
@@ -15040,7 +15040,7 @@ if ("development" !== "production") {
     var ChangeEventPlugin = {
       eventTypes: eventTypes$2,
       _isInputEventSupported: isInputEventSupported,
-      extractEvents: function (topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget) {
+      extractEvents: function (topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags) {
         var targetNode = targetInst ? getNodeFromInstance$1(targetInst) : window;
         var getTargetInstFunc, handleEventFunc;
 
@@ -15115,7 +15115,7 @@ if ("development" !== "production") {
        * browser from outside will not fire a `mouseout` event. In this case, we use
        * the `mouseover` top-level event.
        */
-      extractEvents: function (topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget) {
+      extractEvents: function (topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags) {
         var isOverEvent = topLevelType === TOP_MOUSE_OVER || topLevelType === TOP_POINTER_OVER;
         var isOutEvent = topLevelType === TOP_MOUSE_OUT || topLevelType === TOP_POINTER_OUT;
 
@@ -15350,7 +15350,7 @@ if ("development" !== "production") {
 
     var SelectEventPlugin = {
       eventTypes: eventTypes$4,
-      extractEvents: function (topLevelType, eventSystemFlags, targetInst, nativeEvent, nativeEventTarget) {
+      extractEvents: function (topLevelType, targetInst, nativeEvent, nativeEventTarget, eventSystemFlags) {
         var doc = getEventTargetDocument(nativeEventTarget); // Track whether all listeners exists for this plugin. If none exist, we do
         // not extract events. See #3639.
 
@@ -31297,7 +31297,7 @@ if ("development" !== "production") {
     } // TODO: this is special because it gets imported during build.
 
 
-    var ReactVersion = '16.10.1'; // TODO: This type is shared between the reconciler and ReactDOM, but will
+    var ReactVersion = '16.10.2'; // TODO: This type is shared between the reconciler and ReactDOM, but will
     // eventually be lifted out to the renderer.
 
     setAttemptSynchronousHydration(attemptSynchronousHydration$1);
@@ -31999,7 +31999,7 @@ function _inheritsLoose(subClass, superClass) {
   subClass.__proto__ = superClass;
 }
 },{}],"../node_modules/react-is/cjs/react-is.development.js":[function(require,module,exports) {
-/** @license React v16.10.1
+/** @license React v16.10.2
  * react-is.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -45823,7 +45823,276 @@ var BeadedJewelry = function BeadedJewelry() {
 
 var _default = BeadedJewelry;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../css/gallery.css":"css/gallery.css","../css/jewelry_main.css":"css/jewelry_main.css","../data/beadwork":"data/beadwork.js","simple-react-lightbox":"../node_modules/simple-react-lightbox/dist/index.es.js"}],"components/Jewelry.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../css/gallery.css":"css/gallery.css","../css/jewelry_main.css":"css/jewelry_main.css","../data/beadwork":"data/beadwork.js","simple-react-lightbox":"../node_modules/simple-react-lightbox/dist/index.es.js"}],"images/thumb_wire_wrap1.jpg":[function(require,module,exports) {
+module.exports = "/thumb_wire_wrap1.dff78444.jpg";
+},{}],"images/thumb_wire_wrap2.jpg":[function(require,module,exports) {
+module.exports = "/thumb_wire_wrap2.f1491f5a.jpg";
+},{}],"images/thumb_wire_wrap3.jpg":[function(require,module,exports) {
+module.exports = "/thumb_wire_wrap3.ebb09fcc.jpg";
+},{}],"images/thumb_wire_wrap4.jpg":[function(require,module,exports) {
+module.exports = "/thumb_wire_wrap4.ef9f31ad.jpg";
+},{}],"images/wire_wrap1.jpg":[function(require,module,exports) {
+module.exports = "/wire_wrap1.407f9506.jpg";
+},{}],"images/wire_wrap2.jpg":[function(require,module,exports) {
+module.exports = "/wire_wrap2.950093d0.jpg";
+},{}],"images/wire_wrap3.jpg":[function(require,module,exports) {
+module.exports = "/wire_wrap3.9abaf830.jpg";
+},{}],"images/wire_wrap4.jpg":[function(require,module,exports) {
+module.exports = "/wire_wrap4.fa7aaf8b.jpg";
+},{}],"images/thumb_dice_bloodmagic.jpg":[function(require,module,exports) {
+module.exports = "/thumb_dice_bloodmagic.2997e4ec.jpg";
+},{}],"images/thumb_dice_boreal_wire.jpg":[function(require,module,exports) {
+module.exports = "/thumb_dice_boreal_wire.cd16569f.jpg";
+},{}],"images/thumb_dice_celtic.jpg":[function(require,module,exports) {
+module.exports = "/thumb_dice_celtic.7dcb3f45.jpg";
+},{}],"images/thumb_dice_orange.jpg":[function(require,module,exports) {
+module.exports = "/thumb_dice_orange.7962fc8b.jpg";
+},{}],"images/thumb_dice_purple_wire.jpg":[function(require,module,exports) {
+module.exports = "/thumb_dice_purple_wire.cd37b063.jpg";
+},{}],"images/thumb_dice_watermagic.jpg":[function(require,module,exports) {
+module.exports = "/thumb_dice_watermagic.9bfb2b52.jpg";
+},{}],"images/thumb_dice_white_wire.jpg":[function(require,module,exports) {
+module.exports = "/thumb_dice_white_wire.540af2e9.jpg";
+},{}],"images/dice_bloodmagic.jpg":[function(require,module,exports) {
+module.exports = "/dice_bloodmagic.33159654.jpg";
+},{}],"images/dice_boreal_wire.jpg":[function(require,module,exports) {
+module.exports = "/dice_boreal_wire.9e6719c5.jpg";
+},{}],"images/dice_celtic.jpg":[function(require,module,exports) {
+module.exports = "/dice_celtic.6c289243.jpg";
+},{}],"images/dice_orange.jpg":[function(require,module,exports) {
+module.exports = "/dice_orange.6b9ed7c5.jpg";
+},{}],"images/dice_purple_wire.jpg":[function(require,module,exports) {
+module.exports = "/dice_purple_wire.d5cfe3c7.jpg";
+},{}],"images/dice_watermagic.jpg":[function(require,module,exports) {
+module.exports = "/dice_watermagic.f436a2c5.jpg";
+},{}],"images/dice_white_wire.jpg":[function(require,module,exports) {
+module.exports = "/dice_white_wire.7ad279da.jpg";
+},{}],"data/galleries.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _thumb_blue_pendant = _interopRequireDefault(require("../images/thumb_blue_pendant.jpg"));
+
+var _thumb_green_pendant = _interopRequireDefault(require("../images/thumb_green_pendant.jpg"));
+
+var _thumb_pink_pendant = _interopRequireDefault(require("../images/thumb_pink_pendant.jpg"));
+
+var _thumb_white_pendant = _interopRequireDefault(require("../images/thumb_white_pendant.jpg"));
+
+var _blue_pendant = _interopRequireDefault(require("../images/blue_pendant.jpg"));
+
+var _green_pendant = _interopRequireDefault(require("../images/green_pendant.jpg"));
+
+var _pink_pendant = _interopRequireDefault(require("../images/pink_pendant.jpg"));
+
+var _white_pendant = _interopRequireDefault(require("../images/white_pendant.jpg"));
+
+var _thumb_wire_wrap = _interopRequireDefault(require("../images/thumb_wire_wrap1.jpg"));
+
+var _thumb_wire_wrap2 = _interopRequireDefault(require("../images/thumb_wire_wrap2.jpg"));
+
+var _thumb_wire_wrap3 = _interopRequireDefault(require("../images/thumb_wire_wrap3.jpg"));
+
+var _thumb_wire_wrap4 = _interopRequireDefault(require("../images/thumb_wire_wrap4.jpg"));
+
+var _wire_wrap = _interopRequireDefault(require("../images/wire_wrap1.jpg"));
+
+var _wire_wrap2 = _interopRequireDefault(require("../images/wire_wrap2.jpg"));
+
+var _wire_wrap3 = _interopRequireDefault(require("../images/wire_wrap3.jpg"));
+
+var _wire_wrap4 = _interopRequireDefault(require("../images/wire_wrap4.jpg"));
+
+var _thumb_dice_bloodmagic = _interopRequireDefault(require("../images/thumb_dice_bloodmagic.jpg"));
+
+var _thumb_dice_boreal_wire = _interopRequireDefault(require("../images/thumb_dice_boreal_wire.jpg"));
+
+var _thumb_dice_celtic = _interopRequireDefault(require("../images/thumb_dice_celtic.jpg"));
+
+var _thumb_dice_orange = _interopRequireDefault(require("../images/thumb_dice_orange.jpg"));
+
+var _thumb_dice_purple_wire = _interopRequireDefault(require("../images/thumb_dice_purple_wire.jpg"));
+
+var _thumb_dice_watermagic = _interopRequireDefault(require("../images/thumb_dice_watermagic.jpg"));
+
+var _thumb_dice_white_wire = _interopRequireDefault(require("../images/thumb_dice_white_wire.jpg"));
+
+var _dice_bloodmagic = _interopRequireDefault(require("../images/dice_bloodmagic.jpg"));
+
+var _dice_boreal_wire = _interopRequireDefault(require("../images/dice_boreal_wire.jpg"));
+
+var _dice_celtic = _interopRequireDefault(require("../images/dice_celtic.jpg"));
+
+var _dice_orange = _interopRequireDefault(require("../images/dice_orange.jpg"));
+
+var _dice_purple_wire = _interopRequireDefault(require("../images/dice_purple_wire.jpg"));
+
+var _dice_watermagic = _interopRequireDefault(require("../images/dice_watermagic.jpg"));
+
+var _dice_white_wire = _interopRequireDefault(require("../images/dice_white_wire.jpg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var GALLERIES = [{
+  name: 'Beaded Jewelry',
+  id: 'beadwork',
+  description: 'placeholder',
+  resources: [{
+    id: 1,
+    thumbnail: _thumb_blue_pendant.default,
+    url: _blue_pendant.default,
+    title: 'Blue Swarovski Pendant'
+  }, {
+    id: 2,
+    thumbnail: _thumb_green_pendant.default,
+    url: _green_pendant.default,
+    title: 'Green Swarovski Pendant'
+  }, {
+    id: 3,
+    thumbnail: _thumb_pink_pendant.default,
+    url: _pink_pendant.default,
+    title: 'Pink Glass Cabochon Pendant'
+  }, {
+    id: 4,
+    thumbnail: _thumb_white_pendant.default,
+    url: _white_pendant.default,
+    title: 'White Swarovski Pendant'
+  }]
+}, {
+  name: 'Wire Jewelry',
+  id: 'wirewrapped',
+  description: 'placeholder #2',
+  resources: [{
+    id: 'wire1',
+    thumbnail: _thumb_wire_wrap.default,
+    url: _wire_wrap.default,
+    title: 'placholder 1'
+  }, {
+    id: 'wire2',
+    thumbnail: _thumb_wire_wrap2.default,
+    url: _wire_wrap2.default,
+    title: 'placholder 1'
+  }, {
+    id: 'wire3',
+    thumbnail: _thumb_wire_wrap3.default,
+    url: _wire_wrap3.default,
+    title: 'placholder 1'
+  }, {
+    id: 'wire4',
+    thumbnail: _thumb_wire_wrap4.default,
+    url: _wire_wrap4.default,
+    title: 'placholder 1'
+  }]
+}, {
+  name: 'Dice Jewelry',
+  id: 'dice',
+  description: 'placeholder #3',
+  resources: [{
+    id: 'dice1',
+    thumbnail: _thumb_dice_bloodmagic.default,
+    url: _dice_bloodmagic.default,
+    title: 'placholder 1'
+  }, {
+    id: 'dice2',
+    thumbnail: _thumb_dice_boreal_wire.default,
+    url: _dice_boreal_wire.default,
+    title: 'placholder 1'
+  }, {
+    id: 'dice3',
+    thumbnail: _thumb_dice_celtic.default,
+    url: _dice_celtic.default,
+    title: 'placholder 3'
+  }, {
+    id: 'dice4',
+    thumbnail: _thumb_dice_orange.default,
+    url: _dice_orange.default,
+    title: 'placholder 1'
+  }, {
+    id: 'dice5',
+    thumbnail: _thumb_dice_purple_wire.default,
+    url: _wire_wrap4.default,
+    title: 'placholder 1'
+  }, {
+    id: 'dice6',
+    thumbnail: _thumb_dice_watermagic.default,
+    url: _dice_watermagic.default,
+    title: 'placholder 1'
+  }, {
+    id: 'dice7',
+    thumbnail: _thumb_dice_white_wire.default,
+    url: _dice_white_wire.default,
+    title: 'placholder 1'
+  }]
+}];
+var _default = GALLERIES;
+exports.default = _default;
+},{"../images/thumb_blue_pendant.jpg":"images/thumb_blue_pendant.jpg","../images/thumb_green_pendant.jpg":"images/thumb_green_pendant.jpg","../images/thumb_pink_pendant.jpg":"images/thumb_pink_pendant.jpg","../images/thumb_white_pendant.jpg":"images/thumb_white_pendant.jpg","../images/blue_pendant.jpg":"images/blue_pendant.jpg","../images/green_pendant.jpg":"images/green_pendant.jpg","../images/pink_pendant.jpg":"images/pink_pendant.jpg","../images/white_pendant.jpg":"images/white_pendant.jpg","../images/thumb_wire_wrap1.jpg":"images/thumb_wire_wrap1.jpg","../images/thumb_wire_wrap2.jpg":"images/thumb_wire_wrap2.jpg","../images/thumb_wire_wrap3.jpg":"images/thumb_wire_wrap3.jpg","../images/thumb_wire_wrap4.jpg":"images/thumb_wire_wrap4.jpg","../images/wire_wrap1.jpg":"images/wire_wrap1.jpg","../images/wire_wrap2.jpg":"images/wire_wrap2.jpg","../images/wire_wrap3.jpg":"images/wire_wrap3.jpg","../images/wire_wrap4.jpg":"images/wire_wrap4.jpg","../images/thumb_dice_bloodmagic.jpg":"images/thumb_dice_bloodmagic.jpg","../images/thumb_dice_boreal_wire.jpg":"images/thumb_dice_boreal_wire.jpg","../images/thumb_dice_celtic.jpg":"images/thumb_dice_celtic.jpg","../images/thumb_dice_orange.jpg":"images/thumb_dice_orange.jpg","../images/thumb_dice_purple_wire.jpg":"images/thumb_dice_purple_wire.jpg","../images/thumb_dice_watermagic.jpg":"images/thumb_dice_watermagic.jpg","../images/thumb_dice_white_wire.jpg":"images/thumb_dice_white_wire.jpg","../images/dice_bloodmagic.jpg":"images/dice_bloodmagic.jpg","../images/dice_boreal_wire.jpg":"images/dice_boreal_wire.jpg","../images/dice_celtic.jpg":"images/dice_celtic.jpg","../images/dice_orange.jpg":"images/dice_orange.jpg","../images/dice_purple_wire.jpg":"images/dice_purple_wire.jpg","../images/dice_watermagic.jpg":"images/dice_watermagic.jpg","../images/dice_white_wire.jpg":"images/dice_white_wire.jpg"}],"components/JewelryGallery.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+require("../css/gallery.css");
+
+require("../css/jewelry_main.css");
+
+var _galleries = _interopRequireDefault(require("../data/galleries"));
+
+var _simpleReactLightbox = _interopRequireWildcard(require("simple-react-lightbox"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Gallery = function Gallery(props) {
+  var _props$present = props.present,
+      thumbnail = _props$present.thumbnail,
+      url = _props$present.url,
+      title = _props$present.title;
+  return _react.default.createElement("div", {
+    className: "gallery"
+  }, _react.default.createElement("a", {
+    href: url,
+    "data-attribute": "SRL"
+  }, _react.default.createElement("img", {
+    src: thumbnail,
+    alt: title
+  })));
+};
+
+var JewelryGallery = function JewelryGallery(_ref) {
+  var match = _ref.match;
+
+  var gallery = _galleries.default.find(function (_ref2) {
+    var id = _ref2.id;
+    return id === match.params.keyword;
+  });
+
+  return _react.default.createElement("div", null, _react.default.createElement("div", {
+    className: "frosted"
+  }, _react.default.createElement("p", null, gallery.description)), _react.default.createElement(_simpleReactLightbox.default, null, _react.default.createElement(_simpleReactLightbox.SRLWrapper, null, gallery.resources.map(function (gallery) {
+    return _react.default.createElement(Gallery, {
+      key: gallery.id,
+      present: gallery
+    });
+  }))));
+};
+
+var _default = JewelryGallery;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","../css/gallery.css":"css/gallery.css","../css/jewelry_main.css":"css/jewelry_main.css","../data/galleries":"data/galleries.js","simple-react-lightbox":"../node_modules/simple-react-lightbox/dist/index.es.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/Jewelry.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45843,6 +46112,8 @@ require("../css/jewelry_main.css");
 
 var _reactRouterDom = require("react-router-dom");
 
+var _JewelryGallery = _interopRequireDefault(require("./JewelryGallery"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Jewelry = function Jewelry(props) {
@@ -45853,7 +46124,7 @@ var Jewelry = function Jewelry(props) {
   return _react.default.createElement("div", null, _react.default.createElement("img", {
     src: image,
     alt: "jewelry",
-    class: "image"
+    className: "image"
   }), _react.default.createElement("div", {
     className: "middle"
   }, _react.default.createElement("div", {
@@ -45874,14 +46145,14 @@ var Jewelries = function Jewelries() {
       jewelry: JEWELRY
     })));
   }), _react.default.createElement(_reactRouterDom.Switch, null, _react.default.createElement(_reactRouterDom.Route, {
-    path: "/jewelry/beadwork",
-    component: _BeadedJewelry.default
+    path: "/jewelry/:keyword",
+    component: _JewelryGallery.default
   }))));
 };
 
 var _default = Jewelries;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../data/jewelry_gallery":"data/jewelry_gallery.js","./BeadedJewelry.js":"components/BeadedJewelry.js","./Header":"components/Header.js","../css/jewelry_main.css":"css/jewelry_main.css","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../data/jewelry_gallery":"data/jewelry_gallery.js","./BeadedJewelry.js":"components/BeadedJewelry.js","./Header":"components/Header.js","../css/jewelry_main.css":"css/jewelry_main.css","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./JewelryGallery":"components/JewelryGallery.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -45913,10 +46184,6 @@ _reactDom.default.render(_react.default.createElement(_reactRouterDom.Router, {
 }), _react.default.createElement(_reactRouterDom.Route, {
   path: "/jewelry",
   component: _Jewelry.default
-}), _react.default.createElement(_reactRouterDom.Route, {
-  exact: true,
-  path: "/jewelry/beadwork",
-  component: _BeadedJewelry.default
 }))), document.getElementById('root'));
 },{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./components/App":"components/App.js","./components/Jewelry":"components/Jewelry.js","./components/BeadedJewelry":"components/BeadedJewelry.js","./index.css":"index.css","history":"../node_modules/history/esm/history.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -45946,7 +46213,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41035" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38427" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -45977,8 +46244,9 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
         assetsToAccept.forEach(function (v) {
           hmrAcceptRun(v[0], v[1]);
         });
-      } else {
-        window.location.reload();
+      } else if (location.reload) {
+        // `location` global exists in a web worker context but lacks `.reload()` function.
+        location.reload();
       }
     }
 

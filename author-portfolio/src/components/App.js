@@ -38,6 +38,7 @@ class App extends Component{
                 <Projects />
                 <hr />
                 <SocialProfiles />
+                <hr />
             </div>
         )
     }

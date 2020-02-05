@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {Router, Switch, Route} from 'react-router-dom';
 import App from './components/App';
 import Jewelries from './components/Jewelry';
-import BeadedJewelry from './components/BeadedJewelry';
 import './index.css';
 import {createBrowserHistory} from 'history';
 
@@ -15,7 +14,7 @@ ReactDOM.render(
     <Switch>
         <Route exact={true} path='/' component={App}></Route>
         <Route path='/jewelry' component={Jewelries}></Route>
-        <Route exact path='/jewelry/beadwork' component={BeadedJewelry}></Route>
+        
      
     </Switch>
 </Router>,
