@@ -2,9 +2,8 @@ import React from 'react';
 import JEWELRYGALLERIES from '../data/jewelry_gallery';
 import Header from './Header';
 import '../css/jewelry_main.css';
-import {Route, Switch, Link} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
 import JewelryGallery from './JewelryGallery';
-
 
 const Jewelry = props =>{
     const{image, text, keyword} = props.jewelry;
@@ -20,7 +19,7 @@ const Jewelry = props =>{
 }
 
 const Jewelries = () =>(
-    
+   
     <div>
         <Header />
         <div className="frosted">
@@ -39,12 +38,10 @@ const Jewelries = () =>(
                     </div>
                 )})
             }
-            <Switch>
-                <Route path={`/jewelry/:keyword`} component={JewelryGallery} />
-            </Switch>
-            </div>
-            
+            <Route path={`/jewelry/:keyword`} component={JewelryGallery}/>
+         </div> 
     </div>
+   
     
 )
 
